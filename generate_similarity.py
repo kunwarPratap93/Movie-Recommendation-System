@@ -1,24 +1,33 @@
-# Auto-download TMDB dataset if not present
+# TMDB Movie Recommendation - Data Generation Script
 import os
-import requests
+import sys
 
-MOVIES_URL = "https://raw.githubusercontent.com/nikbearbrown/INFO_6105_Data_Science/master/datasets/tmdb_5000_movies.csv"
-CREDITS_URL = "https://raw.githubusercontent.com/nikbearbrown/INFO_6105_Data_Science/master/datasets/tmdb_5000_credits.csv"
+# Check if we can use existing pickle file
+if os.path.exists("movie_list.pkl"):
+    print("Found existing movie_list.pkl - using it to generate similarity matrix only...")
+    import pickle
+    import pandas as pd
+    from sklearn.feature_extraction.text import CountVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    
+    # Load existing movie list
+    print("Loading movie_list.pkl...")
+    movies = pickle.load(open("movie_list.pkl", "rb"))
+    
+    # Generate similarity matrix
+    print("Generating similarity matrix (this may take a moment)...")
+    cv = CountVectorizer(max_features=5000, stop_words='english')
+    vector = cv.fit_transform(movies['tags']).toarray()
+    similarity = cosine_similarity(vector)
+    
+    # Save similarity
+    print("Saving similarity.pkl...")
+    pickle.dump(similarity, open("similarity.pkl", "wb"))
+    
+    print("Success! Similarity matrix generated.")
+    sys.exit(0)
 
-if not os.path.exists("tmdb_5000_movies.csv"):
-    print("Downloading tmdb_5000_movies.csv...")
-    r = requests.get(MOVIES_URL)
-    with open("tmdb_5000_movies.csv", "wb") as f:
-        f.write(r.content)
-    print("Movies dataset downloaded successfully!")
-
-if not os.path.exists("tmdb_5000_credits.csv"):
-    print("Downloading tmdb_5000_credits.csv...")
-    r = requests.get(CREDITS_URL)
-    with open("tmdb_5000_credits.csv", "wb") as f:
-        f.write(r.content)
-    print("Credits dataset downloaded successfully!")
-
+# If movie_list.pkl doesn't exist, try to download and process datasets
 import pandas as pd
 import numpy as np
 import ast
@@ -26,9 +35,27 @@ import pickle
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+print("""
+================================================================================
+TMDB Dataset Required
+================================================================================
+This project needs the TMDB 5000 Movie Dataset.
+
+Please follow these steps:
+1. Download from Kaggle: https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata
+2. Extract 'tmdb_5000_movies.csv' and 'tmdb_5000_credits.csv'
+3. Place both files in the project root directory
+4. Run this script again: python generate_similarity.py
+
+Alternatively, use the existing movie_list.pkl if available.
+================================================================================
+""")
+
+if not os.path.exists("tmdb_5000_movies.csv") or not os.path.exists("tmdb_5000_credits.csv"):
+    print("ERROR: CSV files not found!")
+    sys.exit(1)
+
 def process_data():
-    print("Checking for dataset files...")
-    
     print("Loading csv files...")
     movies = pd.read_csv("tmdb_5000_movies.csv")
     credits = pd.read_csv("tmdb_5000_credits.csv")
@@ -88,7 +115,6 @@ def process_data():
     return new
 
 def generate_models():
-    # 1. Process Data
     print("Starting data processing...")
     try:
         new_df = process_data()
@@ -97,17 +123,17 @@ def generate_models():
         print(f"Failed to process data: {e}")
         return
 
-    # 2. Save Movie List
+    # Save Movie List
     print("Saving movie_list.pkl...")
     pickle.dump(new_df, open("movie_list.pkl", "wb"))
 
-    # 3. Generate Similarity Matrix
+    # Generate Similarity Matrix
     print("Generating similarity matrix (this may take a moment)...")
     cv = CountVectorizer(max_features=5000, stop_words='english')
     vector = cv.fit_transform(new_df['tags']).toarray()
     similarity = cosine_similarity(vector)
 
-    # 4. Save Similarity
+    # Save Similarity
     print("Saving similarity.pkl...")
     pickle.dump(similarity, open("similarity.pkl", "wb"))
     
