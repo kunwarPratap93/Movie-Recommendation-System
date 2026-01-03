@@ -282,7 +282,12 @@ def load_data():
 
 movies, similarity = load_data()
 
+# TMDB API Key
 API_KEY = "8265bd1679663a7ea12ac168da84d2e8"
+
+
+
+
 
 def get_movie_details(movie_id):
     try:
