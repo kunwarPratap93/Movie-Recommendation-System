@@ -1,17 +1,23 @@
 # Auto-download TMDB dataset if not present
 import os
 import requests
-import zipfile
-import io
 
-DATA_URL = "https://github.com/pratapkunwar/tmdb-dataset/raw/main/tmdb.zip"
+MOVIES_URL = "https://raw.githubusercontent.com/nikbearbrown/INFO_6105_Data_Science/master/datasets/tmdb_5000_movies.csv"
+CREDITS_URL = "https://raw.githubusercontent.com/nikbearbrown/INFO_6105_Data_Science/master/datasets/tmdb_5000_credits.csv"
 
-if not os.path.exists("tmdb_5000_movies.csv") or not os.path.exists("tmdb_5000_credits.csv"):
-    print("Downloading TMDB dataset...")
-    r = requests.get(DATA_URL)
-    z = zipfile.ZipFile(io.BytesIO(r.content))
-    z.extractall()
-    print("Dataset downloaded and extracted successfully!")
+if not os.path.exists("tmdb_5000_movies.csv"):
+    print("Downloading tmdb_5000_movies.csv...")
+    r = requests.get(MOVIES_URL)
+    with open("tmdb_5000_movies.csv", "wb") as f:
+        f.write(r.content)
+    print("Movies dataset downloaded successfully!")
+
+if not os.path.exists("tmdb_5000_credits.csv"):
+    print("Downloading tmdb_5000_credits.csv...")
+    r = requests.get(CREDITS_URL)
+    with open("tmdb_5000_credits.csv", "wb") as f:
+        f.write(r.content)
+    print("Credits dataset downloaded successfully!")
 
 import pandas as pd
 import numpy as np
