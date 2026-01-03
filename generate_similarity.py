@@ -102,3 +102,7 @@ def generate_models():
 
 if __name__ == "__main__":
     generate_models()
+else:
+    # When imported, also run the generation
+    generate_models()
+

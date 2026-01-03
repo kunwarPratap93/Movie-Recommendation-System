@@ -4,6 +4,10 @@ import requests
 import random
 import os
 
+# Auto-generate similarity.pkl if missing
+if not os.path.exists("similarity.pkl"):
+    import generate_similarity
+
 # Page Config
 st.set_page_config(page_title="NetMirror", layout="wide", page_icon="🎬")
 
