@@ -1,24 +1,31 @@
+# Auto-download TMDB dataset if not present
+import os
+import requests
+import zipfile
+import io
+
+DATA_URL = "https://github.com/pratapkunwar/tmdb-dataset/raw/main/tmdb.zip"
+
+if not os.path.exists("tmdb_5000_movies.csv") or not os.path.exists("tmdb_5000_credits.csv"):
+    print("Downloading TMDB dataset...")
+    r = requests.get(DATA_URL)
+    z = zipfile.ZipFile(io.BytesIO(r.content))
+    z.extractall()
+    print("Dataset downloaded and extracted successfully!")
+
 import pandas as pd
 import numpy as np
 import ast
 import pickle
-import os
-import sys
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 def process_data():
     print("Checking for dataset files...")
     
-    if not os.path.exists('tmdb_5000_movies.csv') or not os.path.exists('tmdb_5000_credits.csv'):
-        print("Error: Dataset files not found!")
-        print("Please download 'tmdb_5000_movies.csv' and 'tmdb_5000_credits.csv' from Kaggle.")
-        print("Place them in the root directory of this project.")
-        sys.exit(1)
-
     print("Loading csv files...")
-    movies = pd.read_csv('tmdb_5000_movies.csv')
-    credits = pd.read_csv('tmdb_5000_credits.csv')
+    movies = pd.read_csv("tmdb_5000_movies.csv")
+    credits = pd.read_csv("tmdb_5000_credits.csv")
 
     print("Merging datasets...")
     movies = movies.merge(credits, on='title')
@@ -86,7 +93,7 @@ def generate_models():
 
     # 2. Save Movie List
     print("Saving movie_list.pkl...")
-    pickle.dump(new_df, open('movie_list.pkl','wb'))
+    pickle.dump(new_df, open("movie_list.pkl", "wb"))
 
     # 3. Generate Similarity Matrix
     print("Generating similarity matrix (this may take a moment)...")
@@ -96,7 +103,7 @@ def generate_models():
 
     # 4. Save Similarity
     print("Saving similarity.pkl...")
-    pickle.dump(similarity, open('similarity.pkl','wb'))
+    pickle.dump(similarity, open("similarity.pkl", "wb"))
     
     print("Success! All models generated.")
 
@@ -105,4 +112,3 @@ if __name__ == "__main__":
 else:
     # When imported, also run the generation
     generate_models()
-
