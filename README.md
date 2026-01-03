@@ -1,3 +1,6 @@
+# Live Demo
+https://movie-recommendation-system-2ti2crc8a9n9b3xdi5es24.streamlit.app/
+
 # Movie Recommendation System
 
 A premium, Netflix-style movie recommendation web application powered by Machine Learning and the TMDB API.
