@@ -27,7 +27,7 @@ def process_data():
     movies = pd.read_csv("tmdb_5000_movies.csv")
     credits = pd.read_csv("tmdb_5000_credits.csv")
     
-    movies = movies.merge(credits, on='title')
+    movies = movies.merge(credits, on='movie_id')
     movies = movies[['movie_id','title','overview','genres','keywords','cast','crew']]
     movies.dropna(inplace=True)
 
