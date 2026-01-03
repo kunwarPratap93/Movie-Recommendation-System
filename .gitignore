@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Model Files (Too large / binary)
+*.pkl
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/
+
+# Datasets (if added)
+*.csv
