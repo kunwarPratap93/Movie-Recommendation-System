@@ -1,4 +1,4 @@
-# NetMirror: Movie Recommendation System
+# Movie Recommendation System
 
 A premium, Netflix-style movie recommendation web application powered by Machine Learning and the TMDB API.
 This project demonstrates the implementation of a sophisticated recommendation engine packed into a "True Black" cinematic interface.
@@ -10,7 +10,7 @@ This project demonstrates the implementation of a sophisticated recommendation e
 
 ## 🎥 Project Overview
 
-NetMirror is designed to replicate the experience of premium streaming services. It goes beyond simple list-based recommendations by providing an immersive "Hero" section, rich metadata, and a dynamic, responsive UI. The core machine learning engine analyzes thousands of movies to surface hidden gems that mathematically match the user's taste.
+This application is designed to replicate the experience of premium streaming services. It goes beyond simple list-based recommendations by providing an immersive "Hero" section, rich metadata, and a dynamic, responsive UI. The core machine learning engine analyzes thousands of movies to surface hidden gems that mathematically match the user's taste.
 
 ## ✨ Features
 
@@ -25,7 +25,7 @@ NetMirror is designed to replicate the experience of premium streaming services.
 This project explores and implements several core recommendation strategies:
 
 ### 1. Content-Based Filtering (Implemented)
-The primary engine of NetMirror. We utilize **Cosine Similarity** on a vectorized "tags" matrix.
+The primary engine of the system. We utilize **Cosine Similarity** on a vectorized "tags" matrix.
 - **How it works**: We combine movie overviews, genres, keywords, cast, and director into a single "gene" string for each movie.
 - **Vectorization**: These strings are converted into high-dimensional vectors using `CountVectorizer`.
 - **Similarity**: We calculate the angle between these vectors. Movies with smaller angles are "closer" in content space.
@@ -34,10 +34,10 @@ The primary engine of NetMirror. We utilize **Cosine Similarity** on a vectorize
 While Content-Based filtering focuses on item properties, Collaborative Filtering focuses on user behavior.
 - **User-Based**: "Users who liked Movie A also liked Movie B."
 - **Item-Based**: "Users who liked Movie A tended to rate Movie B highly."
-*NetMirror is architected to support this by extending the dataset with user id/rating matrices.*
+*The system is architected to support this by extending the dataset with user id/rating matrices.*
 
 ### 3. Hybrid Approach (Concept)
-The "Holy Grail" of recommendation systems. NetMirror's design allows for a hybrid module that calculates a weighted average between Content-Based scores and Collaborative scores, providing accurate suggestions even for new users (Cold Start problem) while personalizing for power users.
+The "Holy Grail" of recommendation systems. The design allows for a hybrid module that calculates a weighted average between Content-Based scores and Collaborative scores, providing accurate suggestions even for new users (Cold Start problem) while personalizing for power users.
 
 ### 4. User Rating Personalization
 We utilize TMDB's `vote_average` and `vote_count` to filter and sort high-quality recommendations, ensuring users aren't recommended poorly-rated obscure films unless they specifically search for them.
@@ -84,7 +84,7 @@ python generate_similarity.py
 *This may take a few moments as it processes 5000 movies.*
 
 ### Running the Application
-Launch the NetMirror interface:
+Launch the interface:
 
 ```bash
 streamlit run main.py
