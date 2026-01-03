@@ -1,12 +1,13 @@
-import pickle
-import streamlit as st
-import requests
-import random
 import os
 
 # Auto-generate similarity.pkl if missing
 if not os.path.exists("similarity.pkl"):
     import generate_similarity
+
+import pickle
+import streamlit as st
+import requests
+import random
 
 # Page Config
 st.set_page_config(page_title="NetMirror", layout="wide", page_icon="🎬")
@@ -275,13 +276,6 @@ st.markdown("""
 # --- DATA LOGIC ---
 @st.cache_resource
 def load_data():
-    if not os.path.exists('movie_list.pkl') or not os.path.exists('similarity.pkl'):
-        st.error("Model files not found!")
-        st.write("Please run the generation script first:")
-        st.code("python generate_similarity.py")
-        st.info("Note: You will need the 'tmdb_5000_movies.csv' and 'tmdb_5000_credits.csv' datasets.")
-        st.stop()
-        
     movies = pickle.load(open('movie_list.pkl','rb'))
     similarity = pickle.load(open('similarity.pkl','rb'))
     return movies, similarity
